@@ -1,0 +1,50 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Propeller Aero
+providerId: propeller-aero
+created: '2026-07-04'
+modified: '2026-07-04'
+reconciled: false
+tags:
+- Drone Survey
+- Geospatial
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Propeller does not publish specific numeric rate limits for the Public API in
+  its public documentation. As a paid, plan-gated REST API, access is scoped by
+  subscription entitlement (Public API is available on higher tiers such as
+  Scale) rather than by a metered per-call quota. Clients should assume standard
+  HTTP throttling protections apply, handle HTTP 429 responses, and honor any
+  Retry-After header. Survey-file download URLs are time-limited.
+notes: >-
+  No documented RPM/RPS/daily quota values were found as of the review date.
+  Confirm any enforced limits, concurrency caps, and download-URL expiry windows
+  with Propeller during reconciliation.
+sources:
+- https://propelleraero.readme.io/docs/getting-started
+- https://propelleraero.readme.io/reference
+- https://help.propelleraero.com/hc/en-us/articles/19383843944599-Using-Propeller-API
+responseCodes:
+  throttled: 429
+limits:
+- name: Public API Requests
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: No public numeric limit documented; access is plan-gated per subscription.
+- name: Survey File Download URLs
+  scope: resource
+  metric: expiry
+  limit: time-limited
+  notes: Download URLs returned for survey files expire after a short window.
+policies:
+- name: Plan-Gated Access
+  description: Public API is a premium entitlement of higher tiers (e.g. Scale); availability is controlled by subscription rather than metered usage.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on HTTP 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

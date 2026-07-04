@@ -1,0 +1,655 @@
+openapi: 3.0.3
+info:
+  title: Propeller Public API
+  description: >-
+    The Propeller Public API provides programmatic, read-oriented access to
+    Propeller Aero drone-survey and earthworks-analytics data for construction,
+    mining, aggregates, and waste sites. It exposes organizations, sites (survey
+    projects), workspaces, surveys, downloadable processed survey files
+    (orthophotos, digital terrain models, and point clouds), user-defined shapes
+    and the widgets calculated against them (volumes, cut/fill, distances,
+    areas), and DirtMate position-monitoring configurations and epochs. The API
+    is a paid, premium feature available on higher Propeller plans (such as
+    Scale).
+
+    Requests are made over HTTPS to https://api.propelleraero.com/v1 and are
+    authenticated with a Bearer access token (generated under Settings > Public
+    API in the Propeller portal) or via an OpenID Connect authorization_code
+    flow (discovery at
+    https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration).
+
+    Endpoint paths and HTTP methods in this document are taken from Propeller's
+    public API reference and llms.txt index. Request and response SCHEMAS are
+    modeled from the public documentation for cataloging purposes and are not an
+    exhaustive or byte-exact contract - see x-endpointsModeled - so validate
+    payloads against the live Propeller reference before integrating.
+  version: '1.0'
+  contact:
+    name: Propeller Aero
+    url: https://www.propelleraero.com/
+  x-endpointsModeled: true
+  x-endpointsModeledNote: >-
+    Paths and methods are confirmed from Propeller's public API reference /
+    llms.txt. Response schemas are illustrative models of the documented
+    resources, not verified field-by-field against live payloads.
+servers:
+  - url: https://api.propelleraero.com/v1
+    description: Propeller Public API
+security:
+  - bearerAuth: []
+  - oidc: []
+tags:
+  - name: Organizations
+    description: Top-level accounts that own sites, workspaces, and surveys.
+  - name: Sites
+    description: Survey projects (job sites) within an organization.
+  - name: Surveys
+    description: Individual drone survey captures and their downloadable files.
+  - name: Workspaces
+    description: Analysis contexts within a site that hold shapes and widgets.
+  - name: Shapes
+    description: User-defined polygons, lines, and points drawn in a workspace.
+  - name: Widgets
+    description: Calculated measurements (volumes, distances, areas) tied to a shape.
+  - name: Position Monitoring
+    description: DirtMate position-monitoring configs and recorded epochs.
+paths:
+  /organizations:
+    get:
+      operationId: listOrganizations
+      tags:
+        - Organizations
+      summary: List organizations
+      description: Lists the organizations the authenticated user can access.
+      responses:
+        '200':
+          description: A list of organizations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization_id}:
+    get:
+      operationId: getOrganization
+      tags:
+        - Organizations
+      summary: Get an organization
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: An organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites:
+    get:
+      operationId: listSites
+      tags:
+        - Sites
+      summary: List sites
+      description: Lists the sites (survey projects) within an organization.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+      responses:
+        '200':
+          description: A list of sites.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Site'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization_id}/sites/{site_id}:
+    get:
+      operationId: getSite
+      tags:
+        - Sites
+      summary: Get a site
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+      responses:
+        '200':
+          description: A site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/sample_elevation:
+    get:
+      operationId: sampleSiteElevation
+      tags:
+        - Sites
+      summary: Sample site elevation
+      description: >-
+        Returns the ground elevation at a coordinate on the site's current
+        surface model.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: lng
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: An elevation sample.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lat:
+                    type: number
+                    format: double
+                  lng:
+                    type: number
+                    format: double
+                  elevation:
+                    type: number
+                    format: double
+                  unit:
+                    type: string
+                    example: meters
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/surveys:
+    get:
+      operationId: listSurveys
+      tags:
+        - Surveys
+      summary: List surveys
+      description: Lists the surveys captured for a site.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+      responses:
+        '200':
+          description: A list of surveys.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Survey'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}:
+    get:
+      operationId: getSurvey
+      tags:
+        - Surveys
+      summary: Get a survey
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/SurveyId'
+      responses:
+        '200':
+          description: A survey.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}/files:
+    get:
+      operationId: listSurveyFiles
+      tags:
+        - Surveys
+      summary: List survey files
+      description: >-
+        Lists the processed files available for download for a survey -
+        orthophotos, digital terrain models, and point cloud data - each with a
+        time-limited download URL.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/SurveyId'
+      responses:
+        '200':
+          description: A list of downloadable survey files.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SurveyFile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/workspaces:
+    get:
+      operationId: listWorkspaces
+      tags:
+        - Workspaces
+      summary: List workspaces
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+      responses:
+        '200':
+          description: A list of workspaces.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Workspace'
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}:
+    get:
+      operationId: getWorkspace
+      tags:
+        - Workspaces
+      summary: Get a workspace
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/WorkspaceId'
+      responses:
+        '200':
+          description: A workspace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes:
+    get:
+      operationId: listShapes
+      tags:
+        - Shapes
+      summary: List shapes
+      description: Lists the user-defined shapes (polygons, lines, points) in a workspace.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/WorkspaceId'
+      responses:
+        '200':
+          description: A list of shapes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shape'
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes/{shape_id}:
+    get:
+      operationId: getShape
+      tags:
+        - Shapes
+      summary: Get a shape
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/ShapeId'
+      responses:
+        '200':
+          description: A shape and its associated data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shape'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes/{shape_id}/widgets/{widget_id}/calculate:
+    post:
+      operationId: calculateWidget
+      tags:
+        - Widgets
+      summary: Calculate a widget
+      description: >-
+        Calculates a widget against a shape and returns measured results such as
+        volumes (cut/fill), distances, or areas, optionally scoped to a chosen
+        survey.
+      parameters:
+        - $ref: '#/components/parameters/OrganizationId'
+        - $ref: '#/components/parameters/SiteId'
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/ShapeId'
+        - name: widget_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                survey_id:
+                  type: string
+                  description: Survey to calculate the widget against.
+                base_survey_id:
+                  type: string
+                  description: Optional base survey for cut/fill volume comparisons.
+      responses:
+        '200':
+          description: The calculated widget result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetResult'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /position_monitoring_configs:
+    get:
+      operationId: listPositionMonitoringConfigs
+      tags:
+        - Position Monitoring
+      summary: List position monitoring configs
+      description: Lists DirtMate devices configured as position monitors.
+      responses:
+        '200':
+          description: A list of position monitoring configs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionMonitoringConfig'
+  /position_monitoring_configs/{id}:
+    get:
+      operationId: getPositionMonitoringConfig
+      tags:
+        - Position Monitoring
+      summary: Get a position monitoring config
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A position monitoring config.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionMonitoringConfig'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /position_monitoring_epochs:
+    get:
+      operationId: listPositionMonitoringEpochs
+      tags:
+        - Position Monitoring
+      summary: List position monitoring epochs
+      description: >-
+        Lists the position measurements (epochs) recorded by position-monitoring
+        DirtMates.
+      parameters:
+        - name: position_monitoring_config_id
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter epochs to a single monitoring config / DirtMate.
+      responses:
+        '200':
+          description: A list of position monitoring epochs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionMonitoringEpoch'
+  /position_monitoring_epochs/{id}:
+    get:
+      operationId: getPositionMonitoringEpoch
+      tags:
+        - Position Monitoring
+      summary: Get a position monitoring epoch
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A position monitoring epoch.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionMonitoringEpoch'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token generated under Settings > Public API in the Propeller
+        portal, sent as Authorization: Bearer <access_token>.
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration
+  parameters:
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SurveyId:
+      name: survey_id
+      in: path
+      required: true
+      schema:
+        type: string
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ShapeId:
+      name: shape_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Site:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        timezone:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    Survey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        surveyDate:
+          type: string
+          format: date
+        status:
+          type: string
+          example: processed
+    SurveyFile:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: The output type of the file.
+          enum:
+            - orthophoto
+            - terrain
+            - point_cloud
+        format:
+          type: string
+          example: geotiff
+        url:
+          type: string
+          format: uri
+          description: Time-limited download URL for the processed file.
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Shape:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - polygon
+            - line
+            - point
+        geometry:
+          type: object
+          description: GeoJSON-style geometry for the shape.
+    WidgetResult:
+      type: object
+      properties:
+        widgetId:
+          type: string
+        type:
+          type: string
+          example: volume
+        value:
+          type: number
+          format: double
+        unit:
+          type: string
+          example: cubic_meters
+        surveyId:
+          type: string
+    PositionMonitoringConfig:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        deviceId:
+          type: string
+          description: Identifier of the DirtMate device configured as a position monitor.
+        siteId:
+          type: string
+    PositionMonitoringEpoch:
+      type: object
+      properties:
+        id:
+          type: string
+        positionMonitoringConfigId:
+          type: string
+        recordedAt:
+          type: string
+          format: date-time
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        elevation:
+          type: number
+          format: double
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string

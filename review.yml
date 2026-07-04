@@ -1,0 +1,106 @@
+aid: propeller-aero
+name: Propeller Aero
+review:
+  question: Does Propeller Aero expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-04'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. The Propeller Public API is
+    request/response REST over HTTPS (base https://api.propelleraero.com/v1).
+    There is no server-push transport (WebSocket or SSE) documented on
+    Propeller's own API to model. Position-monitoring data (DirtMate epochs)
+    and survey outputs are retrieved by polling REST endpoints, not by a
+    streaming channel, so there is nothing for an AsyncAPI spec to describe.
+findings:
+  summary: |
+    Propeller Aero does publish a real, documented public API - but it is a
+    paid, premium, plan-gated REST API, not a WebSocket API. The Propeller
+    Public API is available on higher subscription tiers (such as Scale) and is
+    documented publicly on ReadMe (https://propelleraero.readme.io) with an
+    llms.txt endpoint index. It provides read-oriented, programmatic access to
+    organizations, sites, workspaces, surveys, downloadable processed survey
+    files (orthophotos, digital terrain models, point clouds), user-defined
+    shapes and their calculated widgets (volumes, distances, areas), and
+    DirtMate position-monitoring configs and epochs. The base URL is
+    https://api.propelleraero.com/v1. Requests are authenticated with a Bearer
+    access token (generated under Settings > Public API) or via OpenID Connect
+    (authorization_code; discovery at
+    https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration).
+    All documented endpoints are HTTPS REST. No realtime, bidirectional, or
+    streaming WebSocket (ws:// or wss://) endpoint is documented anywhere in
+    Propeller's API reference as of the review date.
+  accessModel: |
+    The Public API is a paid feature bundled into higher Propeller plans rather
+    than a free or self-serve API product. Propeller is sold as annual per-site
+    platform subscriptions plus AeroPoints ground-control hardware; pricing is
+    quote-based (contact sales). The API documentation itself is public on
+    ReadMe, but exercising the API requires an entitled subscription and a
+    portal-generated access token or a registered OIDC client.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.propelleraero.com/v1
+      documented: true
+      note: All Public API resources are request/response REST over HTTPS.
+    - protocol: OpenID Connect
+      scheme: https
+      documented: true
+      note: authorization_code flow for third-party access; discovery at /auth/oidc/.well-known/openid-configuration.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Propeller's public API reference as of the review date.
+  endpointsConfirmedRest:
+    - GET  https://api.propelleraero.com/v1/organizations
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/sample_elevation
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/surveys
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}/files
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/workspaces
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes
+    - GET  https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes/{shape_id}
+    - POST https://api.propelleraero.com/v1/organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes/{shape_id}/widgets/{widget_id}/calculate
+    - GET  https://api.propelleraero.com/v1/position_monitoring_configs
+    - GET  https://api.propelleraero.com/v1/position_monitoring_configs/{id}
+    - GET  https://api.propelleraero.com/v1/position_monitoring_epochs
+    - GET  https://api.propelleraero.com/v1/position_monitoring_epochs/{id}
+  endpointsModeled: |
+    The endpoint paths and HTTP methods above are confirmed from Propeller's
+    public API reference and llms.txt index. The request/response SCHEMAS in
+    openapi/propeller-aero-openapi.yml are modeled from the public documentation
+    for cataloging purposes (x-endpointsModeled: true) and were not verified
+    field-by-field against live payloads.
+sources:
+  - url: https://propelleraero.readme.io/docs/getting-started
+    type: Documentation
+    note: Base URL https://api.propelleraero.com/v1; Bearer token and OpenID Connect auth; all REST. No WebSocket mentioned.
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+    note: API reference landing page; sections for organizations, sites, surveys, workspaces, shapes, widgets, position monitoring.
+  - url: https://propelleraero.readme.io/llms.txt
+    type: APIReference
+    note: Machine-readable index enumerating every documented REST endpoint and method.
+  - url: https://help.propelleraero.com/hc/en-us/articles/19383843944599-Using-Propeller-API
+    type: Documentation
+    note: Describes the Public API as a paid premium feature; lists accessible data (orgs, sites, workspaces, surveys, survey files, shapes, widgets, DirtMate position monitoring).
+  - url: https://www.propelleraero.com/platform/scale/
+    type: Documentation
+    note: Scale tier unlocks custom API integrations for larger organizations.
+  - url: https://github.com/PropellerAero
+    type: SourceCode
+    note: Public GitHub org (visualization tooling and hiring challenges); no official API client/SDK repo published.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Propeller's Public API is
+    request/response REST (with OpenID Connect / Bearer auth). No AsyncAPI
+    document was created because there is no server-push transport on
+    Propeller's own API to model - position-monitoring and survey data are
+    retrieved by polling REST endpoints.

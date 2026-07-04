@@ -1,0 +1,162 @@
+aid: propeller-aero
+url: https://raw.githubusercontent.com/api-evangelist/propeller-aero/refs/heads/main/apis.yml
+name: Propeller Aero
+kind: company
+description: Propeller Aero is a drone survey and earthworks analytics platform for
+  construction, mining, aggregates, and waste sites. Teams fly a drone, process
+  imagery with Propeller's AeroPoints ground control and photogrammetry pipeline,
+  and get accurate 3D site surveys, terrain models, volumes, and progress tracking
+  in the Propeller Platform. The Propeller Public API is a paid, premium feature
+  (available on higher tiers such as Scale) that gives programmatic, read-oriented
+  access to organizations, sites, workspaces, surveys, downloadable survey files
+  (orthophotos, terrain, point clouds), user-defined shapes and their calculated
+  widgets (volumes, distances, areas), and DirtMate position-monitoring data. It is
+  a REST API over HTTPS authenticated with a Bearer access token or via OpenID
+  Connect.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Drone Survey
+- Geospatial
+- Earthworks
+- Construction
+- Mining
+- Photogrammetry
+- Surveying
+- Analytics
+created: '2026-07-04'
+modified: '2026-07-04'
+specificationVersion: '0.19'
+apis:
+- aid: propeller-aero:propeller-aero-organizations-api
+  name: Propeller Organizations API
+  tags:
+  - Organizations
+  - Accounts
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/docs/getting-started
+    type: Documentation
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List the organizations the authenticated user can access and retrieve
+    details for a single organization. Organizations are the top-level container
+    for sites, workspaces, and surveys, and their IDs anchor every other resource
+    path in the API.
+- aid: propeller-aero:propeller-aero-sites-api
+  name: Propeller Sites API
+  tags:
+  - Sites
+  - Projects
+  - Elevation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List the sites (survey projects) within an organization and retrieve
+    a single site's details. Includes a sample-elevation endpoint that returns the
+    ground elevation at a coordinate on the site's current surface model.
+- aid: propeller-aero:propeller-aero-surveys-api
+  name: Propeller Surveys API
+  tags:
+  - Surveys
+  - Datasets
+  - Downloads
+  - Exports
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List the surveys captured for a site, retrieve details for an
+    individual survey, and list the processed survey files available for download -
+    orthophotos, digital terrain models, and point cloud data - so survey outputs
+    can be automated into GIS tools, shared drives, or downstream systems.
+- aid: propeller-aero:propeller-aero-workspaces-api
+  name: Propeller Workspaces API
+  tags:
+  - Workspaces
+  - Views
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List the workspaces within a site and retrieve a single workspace.
+    Workspaces are the analysis contexts that hold user-defined shapes and the
+    widgets calculated against a survey surface.
+- aid: propeller-aero:propeller-aero-shapes-widgets-api
+  name: Propeller Shapes & Widgets API
+  tags:
+  - Shapes
+  - Widgets
+  - Measurements
+  - Volumes
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List and retrieve the user-defined shapes (polygons, lines, and
+    points) drawn in a workspace, and calculate a widget against a shape to return
+    measured results such as volumes, cut/fill, distances, and areas tied to a
+    chosen survey.
+- aid: propeller-aero:propeller-aero-position-monitoring-api
+  name: Propeller Position Monitoring API
+  tags:
+  - Position Monitoring
+  - DirtMate
+  - IoT
+  - Movement
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://propelleraero.readme.io/reference
+  baseURL: https://api.propelleraero.com/v1
+  properties:
+  - url: https://propelleraero.readme.io/reference
+    type: APIReference
+  - url: openapi/propeller-aero-openapi.yml
+    type: OpenAPI
+  description: List and retrieve DirtMate position-monitoring configurations
+    (devices configured as position monitors) and their recorded epochs - the
+    individual position measurements captured over time - for tracking ground
+    movement and asset positions between drone surveys.
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/propeller-aero
+- type: Website
+  url: https://www.propelleraero.com/
+- type: GitHubOrganization
+  url: https://github.com/PropellerAero
+- type: Documentation
+  url: https://propelleraero.readme.io/docs/getting-started
+- type: APIReference
+  url: https://propelleraero.readme.io/reference
+- type: Support
+  url: https://help.propelleraero.com/hc/en-us/articles/19383843944599-Using-Propeller-API
+- type: Plans
+  url: plans/propeller-aero-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/propeller-aero-rate-limits.yml
+- type: FinOps
+  url: finops/propeller-aero-finops.yml
+- url: https://www.propelleraero.com/blog/
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
