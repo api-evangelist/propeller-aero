@@ -1,0 +1,20 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/propeller-aero-openapi.yml
+summary:
+  types:
+  - http
+  - openIdConnect
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: 'Access token generated under Settings > Public API in the Propeller portal,
+    sent as Authorization: Bearer <access_token>.'
+  sources:
+  - openapi/propeller-aero-openapi.yml
+- name: oidc
+  type: openIdConnect
+  openIdConnectUrl: https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration
+  sources:
+  - openapi/propeller-aero-openapi.yml

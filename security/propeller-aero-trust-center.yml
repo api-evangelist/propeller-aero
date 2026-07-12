@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.propelleraero.com/
+url: https://trust.propelleraero.com/
+certifications:
+- SOC 2
+- GDPR
+evidence:
+- source: https://trust.propelleraero.com/
+  keywords:
+  - soc 2
+  - trust center
+  - gdpr

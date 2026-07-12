@@ -137,6 +137,12 @@ apis:
     individual position measurements captured over time - for tracking ground
     movement and asset positions between drone surveys.
 common:
+- type: TrustCenter
+  url: security/propeller-aero-trust-center.yml
+- type: DomainSecurity
+  url: security/propeller-aero-domain-security.yml
+- type: Authentication
+  url: authentication/propeller-aero-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/propeller-aero
 - type: Website
