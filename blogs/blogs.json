@@ -1,0 +1,14 @@
+{
+  "repo": "propeller-aero",
+  "feeds": [
+    {
+      "source": "https://www.propelleraero.com/blog/",
+      "feed_url": "https://www.propelleraero.com/feed/",
+      "title": "",
+      "saved": 3,
+      "method": "discovered"
+    }
+  ],
+  "post_count": 3,
+  "fetched": "2026-07-11T11:50:51Z"
+}
