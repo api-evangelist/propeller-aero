@@ -137,6 +137,8 @@ apis:
     individual position measurements captured over time - for tracking ground
     movement and asset positions between drone surveys.
 common:
+- type: AgenticAccess
+  url: agentic-access/propeller-aero-agentic-access.yml
 - type: TrustCenter
   url: security/propeller-aero-trust-center.yml
 - type: DomainSecurity
