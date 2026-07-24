@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Propeller Public Organizations Surveys API
+  description: 'The Propeller Public API provides programmatic, read-oriented access to Propeller Aero drone-survey and earthworks-analytics data for construction, mining, aggregates, and waste sites. It exposes organizations, sites (survey projects), workspaces, surveys, downloadable processed survey files (orthophotos, digital terrain models, and point clouds), user-defined shapes and the widgets calculated against them (volumes, cut/fill, distances, areas), and DirtMate position-monitoring configurations and epochs. The API is a paid, premium feature available on higher Propeller plans (such as Scale).
+
+    Requests are made over HTTPS to https://api.propelleraero.com/v1 and are authenticated with a Bearer access token (generated under Settings > Public API in the Propeller portal) or via an OpenID Connect authorization_code flow (discovery at https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration).
+
+    Endpoint paths and HTTP methods in this document are taken from Propeller''s public API reference and llms.txt index. Request and response SCHEMAS are modeled from the public documentation for cataloging purposes and are not an exhaustive or byte-exact contract - see x-endpointsModeled - so validate payloads against the live Propeller reference before integrating.'
+  version: '1.0'
+  contact:
+    name: Propeller Aero
+    url: https://www.propelleraero.com/
+  x-endpointsModeled: true
+  x-endpointsModeledNote: Paths and methods are confirmed from Propeller's public API reference / llms.txt. Response schemas are illustrative models of the documented resources, not verified field-by-field against live payloads.
+servers:
+- url: https://api.propelleraero.com/v1
+  description: Propeller Public API
+security:
+- bearerAuth: []
+- oidc: []
+tags:
+- name: Surveys
+  description: Individual drone survey captures and their downloadable files.
+paths:
+  /organizations/{organization_id}/sites/{site_id}/surveys:
+    get:
+      operationId: listSurveys
+      tags:
+      - Surveys
+      summary: List surveys
+      description: Lists the surveys captured for a site.
+      parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/SiteId'
+      responses:
+        '200':
+          description: A list of surveys.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Survey'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}:
+    get:
+      operationId: getSurvey
+      tags:
+      - Surveys
+      summary: Get a survey
+      parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/SiteId'
+      - $ref: '#/components/parameters/SurveyId'
+      responses:
+        '200':
+          description: A survey.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization_id}/sites/{site_id}/surveys/{survey_id}/files:
+    get:
+      operationId: listSurveyFiles
+      tags:
+      - Surveys
+      summary: List survey files
+      description: Lists the processed files available for download for a survey - orthophotos, digital terrain models, and point cloud data - each with a time-limited download URL.
+      parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/SiteId'
+      - $ref: '#/components/parameters/SurveyId'
+      responses:
+        '200':
+          description: A list of downloadable survey files.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SurveyFile'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SurveyId:
+      name: survey_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Survey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        surveyDate:
+          type: string
+          format: date
+        status:
+          type: string
+          example: processed
+    SurveyFile:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: The output type of the file.
+          enum:
+          - orthophoto
+          - terrain
+          - point_cloud
+        format:
+          type: string
+          example: geotiff
+        url:
+          type: string
+          format: uri
+          description: Time-limited download URL for the processed file.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Access token generated under Settings > Public API in the Propeller portal, sent as Authorization: Bearer <access_token>.'
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration

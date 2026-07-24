@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: Propeller Public Organizations Position Monitoring API
+  description: 'The Propeller Public API provides programmatic, read-oriented access to Propeller Aero drone-survey and earthworks-analytics data for construction, mining, aggregates, and waste sites. It exposes organizations, sites (survey projects), workspaces, surveys, downloadable processed survey files (orthophotos, digital terrain models, and point clouds), user-defined shapes and the widgets calculated against them (volumes, cut/fill, distances, areas), and DirtMate position-monitoring configurations and epochs. The API is a paid, premium feature available on higher Propeller plans (such as Scale).
+
+    Requests are made over HTTPS to https://api.propelleraero.com/v1 and are authenticated with a Bearer access token (generated under Settings > Public API in the Propeller portal) or via an OpenID Connect authorization_code flow (discovery at https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration).
+
+    Endpoint paths and HTTP methods in this document are taken from Propeller''s public API reference and llms.txt index. Request and response SCHEMAS are modeled from the public documentation for cataloging purposes and are not an exhaustive or byte-exact contract - see x-endpointsModeled - so validate payloads against the live Propeller reference before integrating.'
+  version: '1.0'
+  contact:
+    name: Propeller Aero
+    url: https://www.propelleraero.com/
+  x-endpointsModeled: true
+  x-endpointsModeledNote: Paths and methods are confirmed from Propeller's public API reference / llms.txt. Response schemas are illustrative models of the documented resources, not verified field-by-field against live payloads.
+servers:
+- url: https://api.propelleraero.com/v1
+  description: Propeller Public API
+security:
+- bearerAuth: []
+- oidc: []
+tags:
+- name: Position Monitoring
+  description: DirtMate position-monitoring configs and recorded epochs.
+paths:
+  /position_monitoring_configs:
+    get:
+      operationId: listPositionMonitoringConfigs
+      tags:
+      - Position Monitoring
+      summary: List position monitoring configs
+      description: Lists DirtMate devices configured as position monitors.
+      responses:
+        '200':
+          description: A list of position monitoring configs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionMonitoringConfig'
+  /position_monitoring_configs/{id}:
+    get:
+      operationId: getPositionMonitoringConfig
+      tags:
+      - Position Monitoring
+      summary: Get a position monitoring config
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A position monitoring config.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionMonitoringConfig'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /position_monitoring_epochs:
+    get:
+      operationId: listPositionMonitoringEpochs
+      tags:
+      - Position Monitoring
+      summary: List position monitoring epochs
+      description: Lists the position measurements (epochs) recorded by position-monitoring DirtMates.
+      parameters:
+      - name: position_monitoring_config_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filter epochs to a single monitoring config / DirtMate.
+      responses:
+        '200':
+          description: A list of position monitoring epochs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionMonitoringEpoch'
+  /position_monitoring_epochs/{id}:
+    get:
+      operationId: getPositionMonitoringEpoch
+      tags:
+      - Position Monitoring
+      summary: Get a position monitoring epoch
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A position monitoring epoch.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PositionMonitoringEpoch'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    PositionMonitoringConfig:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        deviceId:
+          type: string
+          description: Identifier of the DirtMate device configured as a position monitor.
+        siteId:
+          type: string
+    PositionMonitoringEpoch:
+      type: object
+      properties:
+        id:
+          type: string
+        positionMonitoringConfigId:
+          type: string
+        recordedAt:
+          type: string
+          format: date-time
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        elevation:
+          type: number
+          format: double
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Access token generated under Settings > Public API in the Propeller portal, sent as Authorization: Bearer <access_token>.'
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration

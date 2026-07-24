@@ -1,0 +1,132 @@
+openapi: 3.0.3
+info:
+  title: Propeller Public Organizations Shapes API
+  description: 'The Propeller Public API provides programmatic, read-oriented access to Propeller Aero drone-survey and earthworks-analytics data for construction, mining, aggregates, and waste sites. It exposes organizations, sites (survey projects), workspaces, surveys, downloadable processed survey files (orthophotos, digital terrain models, and point clouds), user-defined shapes and the widgets calculated against them (volumes, cut/fill, distances, areas), and DirtMate position-monitoring configurations and epochs. The API is a paid, premium feature available on higher Propeller plans (such as Scale).
+
+    Requests are made over HTTPS to https://api.propelleraero.com/v1 and are authenticated with a Bearer access token (generated under Settings > Public API in the Propeller portal) or via an OpenID Connect authorization_code flow (discovery at https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration).
+
+    Endpoint paths and HTTP methods in this document are taken from Propeller''s public API reference and llms.txt index. Request and response SCHEMAS are modeled from the public documentation for cataloging purposes and are not an exhaustive or byte-exact contract - see x-endpointsModeled - so validate payloads against the live Propeller reference before integrating.'
+  version: '1.0'
+  contact:
+    name: Propeller Aero
+    url: https://www.propelleraero.com/
+  x-endpointsModeled: true
+  x-endpointsModeledNote: Paths and methods are confirmed from Propeller's public API reference / llms.txt. Response schemas are illustrative models of the documented resources, not verified field-by-field against live payloads.
+servers:
+- url: https://api.propelleraero.com/v1
+  description: Propeller Public API
+security:
+- bearerAuth: []
+- oidc: []
+tags:
+- name: Shapes
+  description: User-defined polygons, lines, and points drawn in a workspace.
+paths:
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes:
+    get:
+      operationId: listShapes
+      tags:
+      - Shapes
+      summary: List shapes
+      description: Lists the user-defined shapes (polygons, lines, points) in a workspace.
+      parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/SiteId'
+      - $ref: '#/components/parameters/WorkspaceId'
+      responses:
+        '200':
+          description: A list of shapes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shape'
+  /organizations/{organization_id}/sites/{site_id}/workspaces/{workspace_id}/shapes/{shape_id}:
+    get:
+      operationId: getShape
+      tags:
+      - Shapes
+      summary: Get a shape
+      parameters:
+      - $ref: '#/components/parameters/OrganizationId'
+      - $ref: '#/components/parameters/SiteId'
+      - $ref: '#/components/parameters/WorkspaceId'
+      - $ref: '#/components/parameters/ShapeId'
+      responses:
+        '200':
+          description: A shape and its associated data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shape'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ShapeId:
+      name: shape_id
+      in: path
+      required: true
+      schema:
+        type: string
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Shape:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - polygon
+          - line
+          - point
+        geometry:
+          type: object
+          description: GeoJSON-style geometry for the shape.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Access token generated under Settings > Public API in the Propeller portal, sent as Authorization: Bearer <access_token>.'
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration
