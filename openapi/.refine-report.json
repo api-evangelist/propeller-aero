@@ -1,0 +1,26 @@
+{
+  "provider": "propeller-aero",
+  "sources": [
+    "propeller-aero-organizations-api-openapi.yml",
+    "propeller-aero-position-monitoring-api-openapi.yml",
+    "propeller-aero-shapes-api-openapi.yml",
+    "propeller-aero-sites-api-openapi.yml",
+    "propeller-aero-surveys-api-openapi.yml",
+    "propeller-aero-widgets-api-openapi.yml",
+    "propeller-aero-workspaces-api-openapi.yml"
+  ],
+  "outputs": [
+    "propeller-aero-organizations-api-openapi.yml",
+    "propeller-aero-position-monitoring-api-openapi.yml",
+    "propeller-aero-shapes-api-openapi.yml",
+    "propeller-aero-sites-api-openapi.yml",
+    "propeller-aero-surveys-api-openapi.yml",
+    "propeller-aero-widgets-api-openapi.yml",
+    "propeller-aero-workspaces-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
