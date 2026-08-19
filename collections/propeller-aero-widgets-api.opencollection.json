@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Propeller Public Organizations Widgets API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Widgets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Calculate a widget",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.propelleraero.com/v1/organizations/:organization_id/sites/:site_id/workspaces/:workspace_id/shapes/:shape_id/widgets/:widget_id/calculate",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "shape_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "widget_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Calculates a widget against a shape and returns measured results such as volumes (cut/fill), distances, or areas, optionally scoped to a chosen survey."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

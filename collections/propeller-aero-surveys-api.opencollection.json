@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Propeller Public Organizations Surveys API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Surveys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List surveys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.propelleraero.com/v1/organizations/:organization_id/sites/:site_id/surveys",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Lists the surveys captured for a site."
+        },
+        {
+          "info": {
+            "name": "Get a survey",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.propelleraero.com/v1/organizations/:organization_id/sites/:site_id/surveys/:survey_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "survey_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a survey"
+        },
+        {
+          "info": {
+            "name": "List survey files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.propelleraero.com/v1/organizations/:organization_id/sites/:site_id/surveys/:survey_id/files",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "site_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "survey_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Lists the processed files available for download for a survey - orthophotos, digital terrain models, and point cloud data - each with a time-limited download URL."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
