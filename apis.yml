@@ -13,6 +13,18 @@ description: Propeller Aero is a drone survey and earthworks analytics platform 
   widgets (volumes, distances, areas), and DirtMate position-monitoring data. It is
   a REST API over HTTPS authenticated with a Bearer access token or via OpenID
   Connect.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
