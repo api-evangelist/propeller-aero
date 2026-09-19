@@ -144,6 +144,8 @@ apis:
   humanURL: https://propelleraero.readme.io/reference
   baseURL: https://api.propelleraero.com/v1
   tags:
+  - Workspace
+  tags_raw:
   - Workspaces
   properties:
   - type: OpenAPI
