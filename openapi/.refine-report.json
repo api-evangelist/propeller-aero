@@ -1,13 +1,7 @@
 {
   "provider": "propeller-aero",
   "sources": [
-    "propeller-aero-organizations-api-openapi.yml",
-    "propeller-aero-position-monitoring-api-openapi.yml",
-    "propeller-aero-shapes-api-openapi.yml",
-    "propeller-aero-sites-api-openapi.yml",
-    "propeller-aero-surveys-api-openapi.yml",
-    "propeller-aero-widgets-api-openapi.yml",
-    "propeller-aero-workspaces-api-openapi.yml"
+    "_original/propeller-aero-openapi.yml"
   ],
   "outputs": [
     "propeller-aero-organizations-api-openapi.yml",
@@ -21,6 +15,18 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "propeller-aero-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "propeller-aero-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-position-monitoring-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-shapes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-sites-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-surveys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-widgets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "propeller-aero-workspaces-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
