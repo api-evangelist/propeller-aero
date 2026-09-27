@@ -80,19 +80,19 @@ components:
       schema:
         type: string
   schemas:
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
     Error:
       type: object
       properties:
         error:
           type: string
         message:
+          type: string
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
           type: string
   securitySchemes:
     bearerAuth:

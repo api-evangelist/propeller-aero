@@ -63,14 +63,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    ShapeId:
-      name: shape_id
-      in: path
-      required: true
-      schema:
-        type: string
-    SiteId:
-      name: site_id
+    WorkspaceId:
+      name: workspace_id
       in: path
       required: true
       schema:
@@ -81,8 +75,14 @@ components:
       required: true
       schema:
         type: string
-    WorkspaceId:
-      name: workspace_id
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ShapeId:
+      name: shape_id
       in: path
       required: true
       schema:
@@ -95,13 +95,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     Shape:
       type: object
       properties:
@@ -118,6 +111,13 @@ components:
         geometry:
           type: object
           description: GeoJSON-style geometry for the shape.
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

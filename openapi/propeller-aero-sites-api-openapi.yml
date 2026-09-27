@@ -118,19 +118,26 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    SiteId:
-      name: site_id
-      in: path
-      required: true
-      schema:
-        type: string
     OrganizationId:
       name: organization_id
       in: path
       required: true
       schema:
         type: string
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     Site:
       type: object
       properties:
@@ -146,13 +153,6 @@ components:
         longitude:
           type: number
           format: double
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

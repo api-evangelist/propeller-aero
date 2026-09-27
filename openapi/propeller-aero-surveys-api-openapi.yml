@@ -101,8 +101,8 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    SiteId:
-      name: site_id
+    SurveyId:
+      name: survey_id
       in: path
       required: true
       schema:
@@ -113,20 +113,13 @@ components:
       required: true
       schema:
         type: string
-    SurveyId:
-      name: survey_id
+    SiteId:
+      name: site_id
       in: path
       required: true
       schema:
         type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     SurveyFile:
       type: object
       properties:
@@ -159,6 +152,13 @@ components:
         status:
           type: string
           example: processed
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

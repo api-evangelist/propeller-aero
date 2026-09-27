@@ -60,8 +60,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    SiteId:
-      name: site_id
+    WorkspaceId:
+      name: workspace_id
       in: path
       required: true
       schema:
@@ -72,27 +72,12 @@ components:
       required: true
       schema:
         type: string
-    WorkspaceId:
-      name: workspace_id
+    SiteId:
+      name: site_id
       in: path
       required: true
       schema:
         type: string
-  schemas:
-    Workspace:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -100,6 +85,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http
