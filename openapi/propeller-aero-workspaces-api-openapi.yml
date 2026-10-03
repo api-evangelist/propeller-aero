@@ -59,15 +59,30 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  schemas:
+    Workspace:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   parameters:
-    WorkspaceId:
-      name: workspace_id
+    OrganizationId:
+      name: organization_id
       in: path
       required: true
       schema:
         type: string
-    OrganizationId:
-      name: organization_id
+    WorkspaceId:
+      name: workspace_id
       in: path
       required: true
       schema:
@@ -85,21 +100,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    Workspace:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
   securitySchemes:
     bearerAuth:
       type: http

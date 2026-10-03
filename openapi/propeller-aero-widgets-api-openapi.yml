@@ -83,26 +83,26 @@ components:
         message:
           type: string
   parameters:
-    WorkspaceId:
-      name: workspace_id
-      in: path
-      required: true
-      schema:
-        type: string
     OrganizationId:
       name: organization_id
       in: path
       required: true
       schema:
         type: string
-    SiteId:
-      name: site_id
+    ShapeId:
+      name: shape_id
       in: path
       required: true
       schema:
         type: string
-    ShapeId:
-      name: shape_id
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SiteId:
+      name: site_id
       in: path
       required: true
       schema:

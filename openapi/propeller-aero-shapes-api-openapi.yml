@@ -63,20 +63,8 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    WorkspaceId:
-      name: workspace_id
-      in: path
-      required: true
-      schema:
-        type: string
     OrganizationId:
       name: organization_id
-      in: path
-      required: true
-      schema:
-        type: string
-    SiteId:
-      name: site_id
       in: path
       required: true
       schema:
@@ -87,14 +75,26 @@ components:
       required: true
       schema:
         type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     Shape:
       type: object
       properties:
@@ -111,13 +111,13 @@ components:
         geometry:
           type: object
           description: GeoJSON-style geometry for the shape.
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
