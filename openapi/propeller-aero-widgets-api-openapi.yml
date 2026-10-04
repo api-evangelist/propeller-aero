@@ -58,7 +58,39 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        type: string
+    OrganizationId:
+      name: organization_id
+      in: path
+      required: true
+      schema:
+        type: string
+    SiteId:
+      name: site_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ShapeId:
+      name: shape_id
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     WidgetResult:
       type: object
       properties:
@@ -75,38 +107,6 @@ components:
           example: cubic_meters
         surveyId:
           type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-  parameters:
-    OrganizationId:
-      name: organization_id
-      in: path
-      required: true
-      schema:
-        type: string
-    ShapeId:
-      name: shape_id
-      in: path
-      required: true
-      schema:
-        type: string
-    WorkspaceId:
-      name: workspace_id
-      in: path
-      required: true
-      schema:
-        type: string
-    SiteId:
-      name: site_id
-      in: path
-      required: true
-      schema:
-        type: string
   responses:
     NotFound:
       description: The requested resource was not found.

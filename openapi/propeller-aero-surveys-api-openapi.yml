@@ -88,6 +88,12 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
+    SurveyId:
+      name: survey_id
+      in: path
+      required: true
+      schema:
+        type: string
     OrganizationId:
       name: organization_id
       in: path
@@ -96,12 +102,6 @@ components:
         type: string
     SiteId:
       name: site_id
-      in: path
-      required: true
-      schema:
-        type: string
-    SurveyId:
-      name: survey_id
       in: path
       required: true
       schema:

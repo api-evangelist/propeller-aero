@@ -107,25 +107,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    PositionMonitoringEpoch:
-      type: object
-      properties:
-        id:
-          type: string
-        positionMonitoringConfigId:
-          type: string
-        recordedAt:
-          type: string
-          format: date-time
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-        elevation:
-          type: number
-          format: double
     Error:
       type: object
       properties:
@@ -145,6 +126,25 @@ components:
           description: Identifier of the DirtMate device configured as a position monitor.
         siteId:
           type: string
+    PositionMonitoringEpoch:
+      type: object
+      properties:
+        id:
+          type: string
+        positionMonitoringConfigId:
+          type: string
+        recordedAt:
+          type: string
+          format: date-time
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        elevation:
+          type: number
+          format: double
   responses:
     NotFound:
       description: The requested resource was not found.
