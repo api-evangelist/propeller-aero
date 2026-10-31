@@ -1,4 +1,4 @@
-# Propeller Aero (propeller-aero)
+# Propeller Aero
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,94 +64,132 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Propeller Aero is a drone survey and earthworks analytics platform for construction, mining, aggregates, and waste sites. Teams fly a drone, process imagery with Propeller's AeroPoints smart ground control and photogrammetry pipeline, and get accurate 3D site surveys, terrain models, volumes, and progress tracking in the Propeller Platform.
+Propeller Aero is a drone survey and earthworks analytics platform for construction, mining, aggregates, and waste sites. Teams fly a drone, process imagery with Propeller's AeroPoints ground control and photogrammetry pipeline, and get accurate 3D site surveys, terrain models, volumes, and progress tracking in the Propeller Platform. The Propeller Public API is a paid, premium feature (available on higher tiers such as Scale) that gives programmatic, read-oriented access to organizations, sites, workspaces, surveys, downloadable survey files (orthophotos, terrain, point clouds), user-defined shapes and their calculated widgets (volumes, distances, areas), and DirtMate position-monitoring data. It is a REST API over HTTPS authenticated with a Bearer access token or via OpenID Connect.
 
-The **Propeller Public API** is a paid, premium feature (bundled into higher tiers such as **Scale**) that gives programmatic, read-oriented access to organizations, sites, workspaces, surveys, downloadable survey files (orthophotos, terrain, point clouds), user-defined shapes and their calculated widgets (volumes, distances, areas), and DirtMate position-monitoring data. It is a REST API over HTTPS at `https://api.propelleraero.com/v1`, authenticated with a Bearer access token (generated under **Settings > Public API** in the Propeller portal) or via **OpenID Connect** (`authorization_code`). The API documentation is public on ReadMe, but exercising the API requires an entitled subscription.
+**Areas:** Drone Survey · Geospatial · Earthworks · Construction · Mining · Photogrammetry · Surveying · Analytics
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/propeller-aero/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/propeller-aero/refs/heads/main/apis.yml)
+## Propeller Aero on APIs.io
 
-## Access Model
+Everything profiled for Propeller Aero is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/propeller-aero/](https://apis.io/providers/propeller-aero/)** — or go straight to one of the APIs or properties below.
 
-- **Public API is paid and plan-gated.** It is a premium feature available on higher Propeller tiers (notably Scale). It is not a free or self-serve API product.
-- **Documentation is public.** Endpoint reference and an `llms.txt` index are published on ReadMe ([propelleraero.readme.io](https://propelleraero.readme.io)).
-- **Read-oriented.** The documented surface is primarily `GET` (discovery and download) plus a widget `calculate` (`POST`) for measurements. It is designed to pull site/survey data and processed files into GIS tools, shared drives, and downstream systems - not to author survey projects.
-- **Authentication.** Bearer access token, or OpenID Connect authorization_code flow (discovery at `https://api.propelleraero.com/auth/oidc/.well-known/openid-configuration`).
-- **Endpoint paths are confirmed** from Propeller's public reference / `llms.txt`; the OpenAPI **schemas are modeled** from the public docs (`x-endpointsModeled: true`) and are not a byte-exact contract.
+### APIs (7)
 
-## Tags
+- [Propeller Aero Organizations API](https://apis.io/apis/propeller-aero/propeller-aero-organizations-api/) — Top-level accounts that own sites, workspaces, and surveys.
+- [Propeller Aero Position Monitoring API](https://apis.io/apis/propeller-aero/propeller-aero-position-monitoring-api/) — DirtMate position-monitoring configs and recorded epochs.
+- [Propeller Aero Shapes API](https://apis.io/apis/propeller-aero/propeller-aero-shapes-api/) — User-defined polygons, lines, and points drawn in a workspace.
+- [Propeller Aero Sites API](https://apis.io/apis/propeller-aero/propeller-aero-sites-api/) — Survey projects (job sites) within an organization.
+- [Propeller Aero Surveys API](https://apis.io/apis/propeller-aero/propeller-aero-surveys-api/) — Individual drone survey captures and their downloadable files.
+- [Propeller Aero Widgets API](https://apis.io/apis/propeller-aero/propeller-aero-widgets-api/) — Calculated measurements (volumes, distances, areas) tied to a shape.
+- [Propeller Aero Workspaces API](https://apis.io/apis/propeller-aero/propeller-aero-workspaces-api/) — Analysis contexts within a site that hold shapes and widgets.
 
-- Drone Survey
-- Geospatial
-- Earthworks
-- Construction
-- Mining
-- Photogrammetry
-- Surveying
-- Analytics
+### Published properties
 
-## Timestamps
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-- **Created:** 2026-07-04
-- **Modified:** 2026-07-04
+#### Agentic access (1)
 
-## APIs
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Propeller Organizations API
+- [Propeller Aero Agentic Access](https://apis.io/agentic-access/propeller-aero/propeller-aero-agentic-access/)
 
-List the organizations the authenticated user can access and retrieve details for a single organization. Organizations are the top-level container for sites, workspaces, and surveys.
+#### Collections (7)
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+Postman and Open Collection request collections.
 
-### Propeller Sites API
+- [Propeller Public Organizations API](https://apis.io/collections/propeller-aero/open-propeller-aero-organizations-api/)
+- [Propeller Public Organizations Position Monitoring API](https://apis.io/collections/propeller-aero/open-propeller-aero-position-monitoring-api/)
+- [Propeller Public Organizations Shapes API](https://apis.io/collections/propeller-aero/open-propeller-aero-shapes-api/)
+- [Propeller Public Organizations Sites API](https://apis.io/collections/propeller-aero/open-propeller-aero-sites-api/)
+- [Propeller Public Organizations Surveys API](https://apis.io/collections/propeller-aero/open-propeller-aero-surveys-api/)
+- [Propeller Public Organizations Widgets API](https://apis.io/collections/propeller-aero/open-propeller-aero-widgets-api/)
+- [Propeller Public Organizations Workspaces API](https://apis.io/collections/propeller-aero/open-propeller-aero-workspaces-api/)
 
-List the sites (survey projects) within an organization and retrieve a single site's details, including a sample-elevation endpoint for the ground elevation at a coordinate on the current surface model.
+#### Security (3)
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+Authentication, trust centre, and vulnerability disclosure.
 
-### Propeller Surveys API
+- [Propeller Aero Authentication](https://apis.io/security/propeller-aero/propeller-aero-authentication/)
+- [Propeller Aero Domain Security](https://apis.io/security/propeller-aero/propeller-aero-domain-security/)
+- [Propeller Aero Trust Center](https://apis.io/security/propeller-aero/propeller-aero-trust-center/)
 
-List the surveys captured for a site, retrieve an individual survey, and list processed survey files available for download - orthophotos, digital terrain models, and point clouds.
+#### Plans and pricing (1)
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+Published plans, tiers and prices.
 
-### Propeller Workspaces API
+- [Propeller Aero Plans Pricing](https://apis.io/plans/propeller-aero/propeller-aero-plans-pricing/)
 
-List the workspaces within a site and retrieve a single workspace. Workspaces are the analysis contexts that hold shapes and calculated widgets.
+#### Rate limits (1)
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+Published request limits.
 
-### Propeller Shapes & Widgets API
+- [Propeller Aero Rate Limits](https://apis.io/rate-limits/propeller-aero/propeller-aero-rate-limits/)
 
-List and retrieve user-defined shapes (polygons, lines, points) in a workspace, and calculate a widget against a shape to return volumes (cut/fill), distances, and areas tied to a chosen survey.
+#### FinOps (1)
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+What the API costs to run, by operation.
 
-### Propeller Position Monitoring API
+- [Propeller Aero Finops](https://apis.io/finops/propeller-aero/propeller-aero-finops/)
 
-List and retrieve DirtMate position-monitoring configurations and their recorded epochs (individual position measurements over time) for tracking ground movement and asset positions between surveys.
+## Where to find this API
 
-- **Human URL:** [https://propelleraero.readme.io/reference](https://propelleraero.readme.io/reference)
-- **Base URL:** `https://api.propelleraero.com/v1`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/propeller-aero)
 - [Website](https://www.propelleraero.com/)
-- [GitHub Organization](https://github.com/PropellerAero)
 - [Documentation](https://propelleraero.readme.io/docs/getting-started)
-- [API Reference](https://propelleraero.readme.io/reference)
+- [API reference](https://propelleraero.readme.io/reference)
 - [Support](https://help.propelleraero.com/hc/en-us/articles/19383843944599-Using-Propeller-API)
-- [Plans](plans/propeller-aero-plans-pricing.yml)
-- [Rate Limits](rate-limits/propeller-aero-rate-limits.yml)
-- [Fin Ops](finops/propeller-aero-finops.yml)
 - [Blog](https://www.propelleraero.com/blog/)
+- [GitHub](https://github.com/PropellerAero)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 27.6** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 47.2 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 27.4 |
+| Access clarity | 15.8 |
+
+**Agent readiness 22.6** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/propeller-aero/](https://apis.io/providers/propeller-aero/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Propeller Aero: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/propeller-aero/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
